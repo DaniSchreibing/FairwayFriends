@@ -13,8 +13,8 @@ export function sendTestMessageToQueue(userID: string) {
       if (error1) {
         throw error1;
       }
-      var queue = "GDPR";
-      var msg = JSON.stringify({ UserID: userID });
+      const queue = "GDPR";
+      let msg = JSON.stringify({ UserID: userID });
 
       console.log("Created channel");
 
@@ -39,7 +39,7 @@ export function listenToQueue() {
     connection.createChannel(function (error1, channel) {
       if (error1) { throw error1; }
 
-      var queue = "GDPR";
+      const queue = "GDPR";
 
       channel.assertQueue(queue, { durable: false, });
 
@@ -93,7 +93,7 @@ export function listen(connection: amqp.Connection | null, callback: (message: s
   connection.createChannel(function (error1, channel) {
     if (error1) { throw error1; }
 
-    var queue = "GDPR";
+    const queue = "GDPR";
 
     channel.assertQueue(queue, { durable: true, });
 

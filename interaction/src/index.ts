@@ -18,22 +18,6 @@ app.use("/api/users", interactionRoutes);
 
 dotenv.config();
 
-// get mongo env variables
-// const mongoUri =
-//   "mongodb+srv://admin:admin@fairwayfriends.bfthz6f.mongodb.net/?retryWrites=true&w=majority&appName=FairwayFriends";
-// const clientOptions = {
-//   serverApi: { version: "1" as const, strict: true, deprecationErrors: true },
-// };
-
-// mongoose
-//   .connect(mongoUri, clientOptions)
-//   .then(() => {
-//     console.log("Connected to MongoDB");
-//   })
-//   .catch((err) => {
-//     console.error("Error connecting to MongoDB", err);
-//   });
-
 const addInitialRecord = async () => {
   try {
     const existingRecord = await Interaction.findOne({ name: "AutoRecord" });
