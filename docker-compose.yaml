@@ -1,0 +1,85 @@
+services:
+  # interaction_service:
+  #   build: 
+  #     context: ./interaction_service
+  #     dockerfile: Dockerfile
+  #   container_name: interaction_service
+  #   ports:
+  #     - "3001:3001"
+  #   env_file:
+  #     - .env
+
+  rabbitmq:
+    image: rabbitmq:4.0-management-alpine
+    container_name: 'rabbitmq'
+    ports:
+      - 5673:5672
+      - 15673:15672
+    networks:
+      - rabbitmq_nodejs
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_running"]
+      interval: 10s
+      retries: 5
+      start_period: 10s
+      timeout: 5s
+
+  postgres:
+    image: "postgres:14.5"
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    networks:
+      - postgres_nodejs
+    environment:
+      - POSTGRES_USER=${POSTGRES_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+
+  profile:
+    build: 
+      context: ./profile
+      dockerfile: Dockerfile
+    container_name: profile
+    depends_on:
+      - postgres
+      - rabbitmq
+    ports:
+      - "3003:3003"
+    env_file:
+      - .env
+    networks:
+      - rabbitmq_nodejs
+      - postgres_nodejs
+    environment:
+      AMQP_URL: amqp://guest:guest@rabbitmq:5672
+
+  interaction:
+    build: 
+      context: ./interaction
+      dockerfile: Dockerfile
+    container_name: interaction
+    depends_on:
+      - rabbitmq
+    ports:
+      - "3001:3001"
+    env_file:
+      - .env
+    networks:
+      - rabbitmq_nodejs
+    environment:
+      AMQP_URL: amqp://guest:guest@rabbitmq:5672
+
+  adminer:
+    image: adminer
+    ports:
+      - 8080:8080
+    networks:
+      - postgres_nodejs
+
+networks:
+  rabbitmq_nodejs:
+    driver: bridge
+  postgres_nodejs:
+    driver: bridge
