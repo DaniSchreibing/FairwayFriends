@@ -6,10 +6,7 @@ export const createInteraction = async (interactionData: any) => {
     await interaction.save();
     return interaction;
   } catch (error) {
-    if (error instanceof Error) {
-      throw new Error("Error creating interaction: " + error.message);
-    }
-    throw new Error("Error creating interaction: Unknown error");
+      throw new Error("Error creating interaction: " + error);
   }
 };
 
@@ -18,25 +15,19 @@ export const getInteractions = async () => {
     const interactions = await Interaction.find();
     return interactions;
   } catch (error) {
-    if (error instanceof Error) {
-      throw new Error("Error creating interaction: " + error.message);
-    }
-    throw new Error("Error creating interaction: Unknown error");
+    throw new Error("Error creating interaction: " + error);
   }
 };
 
 export const getInteractionByUserID = async (userID: string) => {
   try {
     const interaction = await Interaction.find({ userID: userID });
-    if (!interaction) {
+    if (!interaction || interaction.length === 0) {
       throw new Error("Interaction not found");
     }
     return interaction;
   } catch (error) {
-    if (error instanceof Error) {
-      throw new Error("Error creating interaction: " + error.message);
-    }
-    throw new Error("Error creating interaction: Unknown error");
+      throw new Error("Error getting interaction: " + error);
   }
 };
 
@@ -48,12 +39,9 @@ export const deleteInteraction = async (interactionId: any) => {
     }
     return interaction;
   } catch (error) {
-    if (error instanceof Error) {
-      throw new Error("Error creating interaction: " + error.message);
+      throw new Error("Error deleting interaction: " + error);
     }
-    throw new Error("Error creating interaction: Unknown error");
   }
-};
 
 export const deleteByUserID = async (userID: string) => {
   try {
@@ -63,9 +51,6 @@ export const deleteByUserID = async (userID: string) => {
     }
     return interaction;
   } catch (error) {
-    if (error instanceof Error) {
-      throw new Error("Error creating interaction: " + error.message);
-    }
-    throw new Error("Error creating interaction: Unknown error");
-  }
+    throw new Error("Error deleting interaction: " + error);
+  };
 };

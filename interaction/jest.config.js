@@ -1,7 +1,9 @@
-/** @type {import('ts-jest').JestConfigWithTsJest} **/
+// jest.config.js
 module.exports = {
-  testEnvironment: "node",
-  transform: {
-    "^.+\.tsx?$": ["ts-jest",{}],
-  },
+  preset: 'ts-jest',
+  testEnvironment: 'node',
+  setupFiles: ['dotenv/config'],
+  collectCoverage: true,
+  coverageReporters: ['text', 'html'],
+  coverageDirectory: '<rootDir>/coverage/',
 };
