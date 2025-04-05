@@ -1,4 +1,4 @@
-name: Tests
+name: Testing for Interaction Service
 
 on:
   push:
@@ -21,7 +21,7 @@ jobs:
       - name: Install Dependencies
         run: npm ci
         
-      - name: Test with Jest and Supertest
+      - name: Run tests
         env:
           NODE_ENV: test
-        run: npx jest
+        run: npm test
