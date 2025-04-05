@@ -1,13 +1,13 @@
 import mongoose from "mongoose";
 import { MongoMemoryServer } from "mongodb-memory-server";
-import Interaction from "../models/interaction.model";
+import Interaction from "../src/models/interaction.model";
 import {
   createInteraction,
   getInteractions,
   getInteractionByUserID,
   deleteInteraction,
   deleteByUserID,
-} from "../services/interaction.service";
+} from "../src/services/interaction.service";
 
 let mongod: MongoMemoryServer;
 let uri: string;
