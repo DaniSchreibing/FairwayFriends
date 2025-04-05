@@ -13,13 +13,13 @@ jobs:
     defaults:
       run:
         working-directory: ./interaction
-        
+
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
       - name: Run tests with coverage
-        run: npm test:coverage
+        run: npm run test:coverage
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
         env:
