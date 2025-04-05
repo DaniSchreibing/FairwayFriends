@@ -5,4 +5,8 @@ module.exports = {
   collectCoverage: true,
   coverageReporters: ['text', 'html'],
   coverageDirectory: '<rootDir>/coverage/',
+  transform: {
+    '^.+\\.tsx?$': 'ts-jest',
+  },
+  moduleFileExtensions: ['ts', 'js'],
 };
