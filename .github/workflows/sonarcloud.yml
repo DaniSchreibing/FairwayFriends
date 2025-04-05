@@ -9,17 +9,12 @@ jobs:
   sonarqube:
     name: SonarQube
     runs-on: windows-latest
-
-    defaults:
-      run:
-        working-directory: ./interaction
-
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
       - name: Run tests with coverage
-        run: npm run test:coverage
+        run: npm run test-interaction
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
         env:
