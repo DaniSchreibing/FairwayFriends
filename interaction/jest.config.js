@@ -3,7 +3,7 @@ module.exports = {
   testEnvironment: 'node',
   setupFiles: ['dotenv/config'],
   collectCoverage: true,
-  coverageReporters: ['text', 'html'],
+  coverageReporters: ['text', 'html', 'lcov'],
   coverageDirectory: '<rootDir>/coverage/',
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
