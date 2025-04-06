@@ -10,8 +10,9 @@ jobs:
     name: SonarQube-interaction-service
     runs-on: windows-latest
     defaults:
-      roots:
-        - ./interaction
+      run:
+        working-directory: ./interaction
+        
     steps:
       - uses: actions/checkout@v4
         with:
