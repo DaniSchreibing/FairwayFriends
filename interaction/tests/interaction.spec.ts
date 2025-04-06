@@ -35,7 +35,6 @@ afterAll(async () => {
 });
 
 describe("Interaction Service", () => {
-
   describe("createInteraction", () => {
     it("should successfully create a new interaction", async () => {
       const testData = {
@@ -64,9 +63,11 @@ describe("Interaction Service", () => {
   });
 
   describe("getInteractions", () => {
+    let createdInteraction: any;
+
     beforeEach(async () => {
       // Create test interactions
-      await createInteraction({
+      createdInteraction = await createInteraction({
         userID: "test-user-1",
         type: "click",
         timestamp: new Date(),
@@ -93,16 +94,19 @@ describe("Interaction Service", () => {
       const interactions = await getInteractions();
       expect(interactions).toEqual([]);
     });
+
+    it("should throw general errors", async () => {
+      jest
+        .spyOn(Interaction, "findByIdAndDelete")
+        .mockRejectedValueOnce(new Error("MongoDB connection timeout"));
+
+      await expect(deleteInteraction(createdInteraction._id)).rejects.toThrow(
+        expect.objectContaining({
+          message: expect.stringMatching(/^Error deleting interaction: .+$/),
+        })
+      );
+    });
   });
-
-  //   it("should throw error", async () => {
-  //     const testData = {} as any;
-
-  //     await expect(getInteractions()).rejects.toThrow(
-  //       "Error getting interaction"
-  //     );
-  //   });
-  // });
 
   describe("getInteractionByUserID", () => {
     beforeEach(async () => {
@@ -167,13 +171,13 @@ describe("Interaction Service", () => {
     });
 
     it("should throw general errors", async () => {
-      jest.spyOn(Interaction, 'findByIdAndDelete').mockRejectedValueOnce(
-        new Error('MongoDB connection timeout')
-      );
+      jest
+        .spyOn(Interaction, "findByIdAndDelete")
+        .mockRejectedValueOnce(new Error("MongoDB connection timeout"));
 
       await expect(deleteInteraction(createdInteraction._id)).rejects.toThrow(
         expect.objectContaining({
-          message: expect.stringMatching(/^Error deleting interaction: .+$/)
+          message: expect.stringMatching(/^Error deleting interaction: .+$/),
         })
       );
     });
@@ -210,13 +214,13 @@ describe("Interaction Service", () => {
     });
 
     it("should throw general errors", async () => {
-      jest.spyOn(Interaction, 'findByIdAndDelete').mockRejectedValueOnce(
-        new Error('MongoDB connection timeout')
-      );
+      jest
+        .spyOn(Interaction, "findByIdAndDelete")
+        .mockRejectedValueOnce(new Error("MongoDB connection timeout"));
 
       await expect(deleteInteraction(createdInteraction._id)).rejects.toThrow(
         expect.objectContaining({
-          message: expect.stringMatching(/^Error deleting interaction: .+$/)
+          message: expect.stringMatching(/^Error deleting interaction: .+$/),
         })
       );
     });

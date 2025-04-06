@@ -15,7 +15,7 @@ export const getInteractions = async () => {
     const interactions = await Interaction.find();
     return interactions;
   } catch (error) {
-    throw new Error("Error creating interaction: " + error);
+    throw new Error("Error getting interactions: " + error);
   }
 };
 
