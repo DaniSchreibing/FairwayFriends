@@ -22,7 +22,7 @@ export const getInteractions = async () => {
 export const getInteractionByUserID = async (userID: string) => {
   try {
     const interaction = await Interaction.find({ userID: userID });
-    if (!interaction || interaction.length === 0) {
+    if (!interaction) {
       throw new Error("Interaction not found");
     }
     return interaction;

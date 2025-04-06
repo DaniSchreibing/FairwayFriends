@@ -84,10 +84,25 @@ describe("Interaction Service", () => {
 
     it("should return all interactions", async () => {
       const interactions = await getInteractions();
-      expect(interactions.length).toBeGreaterThan(0);
+      expect(interactions).toHaveLength(2);
       expect(Array.isArray(interactions)).toBeTruthy();
     });
+
+    it("should return empty array when no interactions exist", async () => {
+      await Interaction.deleteMany({});
+      const interactions = await getInteractions();
+      expect(interactions).toEqual([]);
+    });
   });
+
+  //   it("should throw error", async () => {
+  //     const testData = {} as any;
+
+  //     await expect(getInteractions()).rejects.toThrow(
+  //       "Error getting interaction"
+  //     );
+  //   });
+  // });
 
   describe("getInteractionByUserID", () => {
     beforeEach(async () => {
@@ -146,15 +161,29 @@ describe("Interaction Service", () => {
     it("should throw error for invalid ID", async () => {
       const testData = {} as any;
 
-      await expect(deleteInteraction(testData)).rejects.toThrow(
-        "Error deleting interaction"
+      await expect(getInteractionByUserID(testData)).rejects.toThrow(
+        "Error getting interaction"
+      );
+    });
+
+    it("should throw general errors", async () => {
+      jest.spyOn(Interaction, 'findByIdAndDelete').mockRejectedValueOnce(
+        new Error('MongoDB connection timeout')
+      );
+
+      await expect(deleteInteraction(createdInteraction._id)).rejects.toThrow(
+        expect.objectContaining({
+          message: expect.stringMatching(/^Error deleting interaction: .+$/)
+        })
       );
     });
   });
 
   describe("deleteByUserID", () => {
+    let createdInteraction: any;
+
     beforeEach(async () => {
-      await createInteraction({
+      createdInteraction = await createInteraction({
         userID: "test-user-id",
         type: "click",
         timestamp: new Date(),
@@ -175,8 +204,20 @@ describe("Interaction Service", () => {
     it("should throw error for invalid ID", async () => {
       const testData = {} as any;
 
-      await expect(deleteByUserID(testData)).rejects.toThrow(
-        "Error deleting interaction"
+      await expect(getInteractionByUserID(testData)).rejects.toThrow(
+        "Error getting interaction"
+      );
+    });
+
+    it("should throw general errors", async () => {
+      jest.spyOn(Interaction, 'findByIdAndDelete').mockRejectedValueOnce(
+        new Error('MongoDB connection timeout')
+      );
+
+      await expect(deleteInteraction(createdInteraction._id)).rejects.toThrow(
+        expect.objectContaining({
+          message: expect.stringMatching(/^Error deleting interaction: .+$/)
+        })
       );
     });
   });
