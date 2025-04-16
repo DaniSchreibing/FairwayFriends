@@ -1,4 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { UserRole } from "./Roles.enum";
 
 @Entity()
 export class User {
@@ -14,6 +15,15 @@ export class User {
   @Column()
   age!: number;
 
-  @Column("uuid", {nullable: true})
+  @Column({
+    nullable: true
+  })
   UserID!: string;
+
+  @Column({
+    type: 'enum',
+    enum: UserRole,
+    nullable: true,
+  })
+  Role!: UserRole;
 }

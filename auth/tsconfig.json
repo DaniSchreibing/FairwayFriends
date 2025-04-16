@@ -2,7 +2,7 @@
    "compilerOptions": {
       "lib": [
          "es5",
-         "es6"
+         "es6",
       ],
       "esModuleInterop": true,
       "target": "es5",
@@ -14,5 +14,7 @@
       "sourceMap": true,
       "forceConsistentCasingInFileNames": true,
       "strict": true,
-   }
+   },
+   "include": ["src/**/*"],
+   "exclude": ["node_modules"]
 }
