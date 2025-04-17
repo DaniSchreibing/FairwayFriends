@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import firebase from "firebase/app";
+import { sendProfileData } from "../services/rabbitmq.service";
 
 const {
   getAuth,
@@ -14,7 +15,7 @@ const {
 const auth = getAuth();
 
 export const registerUser = (req: Request, res: Response) => {
-  const { email, password } = req.body;
+  const { email, password } = req.body.registerData;
   if (!email || !password) {
     res.status(422).json({
       email: "Email is required",
@@ -25,6 +26,13 @@ export const registerUser = (req: Request, res: Response) => {
     .then((userCredential: any) => {
       sendEmailVerification(auth.currentUser)
         .then(() => {
+          // TODO: Add logic to delete user if profile creation fails
+          const profileData = {
+            UserID: userCredential.user.uid,
+            ...req.body.profileData,
+          };
+          sendProfileData(profileData);
+          console.log("Profile data sent to RabbitMQ:", profileData);
           res.status(201).json({
             message: "Verification email sent! User created successfully!",
           });

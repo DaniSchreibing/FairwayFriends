@@ -8,6 +8,7 @@ import { resolve } from "path";
 import * as rabbitMQService from "./services/rabbitmq.service";
 import { deleteByUserID } from "./services/user.service";
 import cookieParser from "cookie-parser";
+import * as profileService from "./services/user.service";
 
 dotenv.config({ path: resolve(__dirname, "../.env") });
 
@@ -35,6 +36,18 @@ AppDataSource.initialize()
         })();
         console.log("Received message:", userId);
         deleteByUserID(userId);
+      });
+      rabbitMQService.listenForRegistration(connection, (message) => {
+        const profileData = (() => {
+          try {
+            return JSON.parse(message).profileData;
+          } catch {
+            return null;
+          }
+        })();
+        console.log("Received message:", profileData);
+        // TODO: Add logic to send message to RabbitMQ if profile creation fails so that Firebase can delete user
+        profileService.createProfile(profileData);
       });
     });
 

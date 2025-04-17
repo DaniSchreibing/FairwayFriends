@@ -7,7 +7,7 @@ export const createProfile = async (userData: User) => {
   try {
     const userRepository = AppDataSource.getRepository(User);
     const user = new User();
-    user.UserID = uuidv4(); // Automatically generate UUID
+    // user.UserID = uuidv4(); // Automatically generate UUID
 
     Object.assign(user, userData);
 

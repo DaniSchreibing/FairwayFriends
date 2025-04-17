@@ -1,8 +1,9 @@
 import * as amqp from "amqplib/callback_api";
+import { Profile } from "../models/profile.model";
 
 const amqpUrl = process.env.AMQP_URL || 'amqp://localhost:5673';
 
-export function sendTestMessageToQueue(userID: string) {
+export function sendProfileData(profileData: Profile) {
   amqp.connect(amqpUrl, function (error0, connection) {
     if (error0) {
       throw error0;
@@ -12,8 +13,8 @@ export function sendTestMessageToQueue(userID: string) {
       if (error1) {
         throw error1;
       }
-      var queue = "GDPR";
-      var msg = JSON.stringify({ "UserID": userID });
+      var queue = "Registration";
+      var msg = JSON.stringify({ "profileData": profileData });
     
       console.log("Created channel");
 

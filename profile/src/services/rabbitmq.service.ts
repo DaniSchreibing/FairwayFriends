@@ -117,6 +117,38 @@ export function listen(connection: amqp.Connection | null, callback: (message: s
   });
 }
 
+export function listenForRegistration(connection: amqp.Connection | null, callback: (message: string) => void ): void {
+  if (!connection) {
+    console.error("No connection provided to listen function.");
+    return;
+  }
+  connection.createChannel(function (error1, channel) {
+    if (error1) { throw error1; }
+
+    const queue = "Registration";
+
+    channel.assertQueue(queue, { durable: true, });
+
+    console.log(" [*] Waiting for messages in %s. To exit press CTRL+C",queue );
+
+    channel.consume(
+      queue,
+      function (msg) {
+        if (msg) {
+          console.log(" [x] Received %s", msg.content.toString());
+          callback(msg.content.toString());
+        } else {
+          console.log(" [x] Received a null message");
+          callback("null message");
+        }
+      },
+      {
+        noAck: true,
+      }
+    );
+  });
+}
+
 export async function connectWithRetry(retries = 5, delay = 5000) {
   for (let i = 0; i < retries; i++) {
     try {
