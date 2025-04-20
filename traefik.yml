@@ -1,0 +1,6 @@
+http:
+  middlewares:
+    auth:
+      forwardAuth:
+        address: http://localhost:api/auth/verify
+        trustForwardHeader: true

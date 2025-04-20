@@ -1,17 +1,29 @@
 services:
-  # interaction_service:
-  #   build: 
-  #     context: ./interaction_service
-  #     dockerfile: Dockerfile
-  #   container_name: interaction_service
-  #   ports:
-  #     - "3001:3001"
-  #   env_file:
-  #     - .env
+  gateway:
+    image: traefik:v2.10
+    container_name: gateway
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      # - "--providers.file.filename=/etc/traefik/traefik.yml"
+    ports:
+      - "8080:8080"
+      - "80:80"
+    networks:
+      - rabbitmq_nodejs
+      - postgres_nodejs
+      - total
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      # - "./traefik.yml:/etc/traefik/traefik.yml:ro"
+    depends_on:
+      - auth
 
   rabbitmq:
     image: rabbitmq:4.0-management-alpine
-    container_name: 'rabbitmq'
+    container_name: 'rabbitmq2'
     ports:
       - 5673:5672
       - 15673:15672
@@ -41,10 +53,11 @@ services:
     build: 
       context: ./profile
       dockerfile: Dockerfile
-    container_name: profile
+    container_name: profile2
     depends_on:
       - postgres
       - rabbitmq
+      - auth
     ports:
       - "3003:3003"
     env_file:
@@ -52,29 +65,61 @@ services:
     networks:
       - rabbitmq_nodejs
       - postgres_nodejs
+      - total
     environment:
       AMQP_URL: amqp://guest:guest@rabbitmq:5672
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.profile.rule=PathPrefix(`/api/profile`)"
+      - "traefik.http.routers.profile.entrypoints=web"
+      # - "traefik.http.routers.profile.middlewares=auth"
+      - "traefik.http.services.profile.loadbalancer.server.port=3003"
 
   interaction:
     build: 
       context: ./interaction
       dockerfile: Dockerfile
-    container_name: interaction
+    container_name: interaction2
     depends_on:
       - rabbitmq
+      - auth
     ports:
       - "3001:3001"
     env_file:
       - .env
     networks:
       - rabbitmq_nodejs
+      - total
     environment:
       AMQP_URL: amqp://guest:guest@rabbitmq:5672
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.interaction.rule=PathPrefix(`/api/interaction`)"
+      - "traefik.http.routers.interaction.entrypoints=web"
+      # - "traefik.http.routers.interaction.middlewares=auth"
+      - "traefik.http.services.interaction.loadbalancer.server.port=3001"
+
+  auth:
+    build: 
+      context: ./auth
+      dockerfile: Dockerfile
+    container_name: auth
+    env_file:
+      - .env
+    ports:
+      - "3002:3002"
+    networks:
+      - total
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.auth.rule=PathPrefix(`/api/auth`)"
+      - "traefik.http.routers.auth.entrypoints=web"
+      - "traefik.http.services.auth.loadbalancer.server.port=3002"
 
   adminer:
     image: adminer
     ports:
-      - 8080:8080
+      - 8085:8080
     networks:
       - postgres_nodejs
 
@@ -82,4 +127,6 @@ networks:
   rabbitmq_nodejs:
     driver: bridge
   postgres_nodejs:
+    driver: bridge
+  total:
     driver: bridge

@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // setup routes
-app.use("/api/users", interactionRoutes);
+app.use("/api/interaction", interactionRoutes);
 
 dotenv.config();
 

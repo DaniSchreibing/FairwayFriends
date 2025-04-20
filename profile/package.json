@@ -4,10 +4,13 @@
    "description": "Awesome project developed with TypeORM.",
    "type": "commonjs",
    "dependencies": {
+      "@types/cookie-parser": "^1.4.8",
       "amqplib": "^0.10.7",
       "body-parser": "^1.19.1",
+      "cookie-parser": "^1.4.7",
       "dotenv": "^16.4.7",
       "express": "^4.17.2",
+      "firebase-admin": "^13.2.0",
       "pg": "^8.4.0",
       "reflect-metadata": "^0.1.13",
       "typeorm": "0.3.21"
