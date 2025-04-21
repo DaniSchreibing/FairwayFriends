@@ -46,8 +46,18 @@ AppDataSource.initialize()
           }
         })();
         console.log("Received message:", profileData);
-        // TODO: Add logic to send message to RabbitMQ if profile creation fails so that Firebase can delete user
         profileService.createProfile(profileData);
+
+        // //TODO: Test this
+        // profileService
+        //   .createProfile(profileData)
+        //   .then((result) => {
+        //     console.log("Profile created:", result);
+        //   })
+        //   .catch((error) => {
+        //     console.error("Error creating profile:", error);
+        //     rabbitMQService.deleteFirebaseUser(profileData.UserID);
+        //   });
       });
     });
 

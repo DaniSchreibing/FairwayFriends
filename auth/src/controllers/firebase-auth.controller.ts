@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import firebase from "firebase/app";
 import { sendProfileData } from "../services/rabbitmq.service";
+import * as rabbitMQService from "../services/rabbitmq.service";
 
 const {
   getAuth,
@@ -10,6 +11,7 @@ const {
   sendEmailVerification,
   sendPasswordResetEmail,
   deleteUser,
+  admin,
 } = require("../firebase.config");
 
 const auth = getAuth();
@@ -22,20 +24,43 @@ export const registerUser = (req: Request, res: Response) => {
       password: "Password is required",
     });
   }
+  //TODO: https://firebase.google.com/docs/auth/admin/manage-users#node.js_2 Using the Admin SDK to delete a user based on their UID!
   createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential: any) => {
       sendEmailVerification(auth.currentUser)
         .then(() => {
-          // TODO: Add logic to delete user if profile creation fails
           const profileData = {
             UserID: userCredential.user.uid,
             ...req.body.profileData,
           };
-          sendProfileData(profileData);
-          console.log("Profile data sent to RabbitMQ:", profileData);
           res.status(201).json({
             message: "Verification email sent! User created successfully!",
           });
+
+          sendProfileData(profileData);
+          console.log("Profile data sent to RabbitMQ:", profileData);
+          
+          // //TODO: Test this
+          // rabbitMQService.connectWithRetry(5, 5000, (error, connection) => {
+          //   rabbitMQService.listenToFailedProfileCreation(connection, (message) => {
+          //     const userId = (() => {
+          //       try {
+          //         return JSON.parse(message).UserID;
+          //       } catch {
+          //         return null;
+          //       }
+          //     })();
+          //     console.log("Received message:", userId);
+          //     //TODO: See if this works as im doubtful about the use of admin here
+          //     admin.getAuth().deleteUser(userId)
+          //       .then(() => {
+          //         console.log("User deleted successfully:", userId);
+          //       })
+          //       .catch((error: any) => {
+          //         console.error("Error deleting user:", error);
+          //       });
+          //   });
+          // })
         })
         .catch((error: any) => {
           console.error(error);

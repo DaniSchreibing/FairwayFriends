@@ -3,7 +3,7 @@ import * as amqp2 from "amqplib";
 
 const amqpUrl = process.env.AMQP_URL || "amqp://localhost:5673";
 
-export function sendTestMessageToQueue(userID: string) {
+export function deleteFirebaseUser(userID: string) {
   amqp.connect(amqpUrl, function (error0, connection) {
     if (error0) {
       throw error0;
@@ -13,7 +13,7 @@ export function sendTestMessageToQueue(userID: string) {
       if (error1) {
         throw error1;
       }
-      const queue = "GDPR";
+      const queue = "RegistrationFailure";
       let msg = JSON.stringify({ UserID: userID });
 
       console.log("Created channel");
