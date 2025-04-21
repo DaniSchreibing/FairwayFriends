@@ -110,6 +110,11 @@ services:
       - "3002:3002"
     networks:
       - total
+      - rabbitmq_nodejs
+    depends_on:
+      - rabbitmq
+    environment:
+      AMQP_URL: amqp://guest:guest@rabbitmq:5672
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.auth.rule=PathPrefix(`/api/auth`)"

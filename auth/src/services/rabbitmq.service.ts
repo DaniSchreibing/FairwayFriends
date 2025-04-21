@@ -1,8 +1,9 @@
 import * as amqp from "amqplib/callback_api";
+import { Profile } from "../models/profile.model";
 
 const amqpUrl = process.env.AMQP_URL || 'amqp://localhost:5673';
 
-export function sendTestMessageToQueue(userID: string) {
+export function sendProfileData(profileData: Profile) {
   amqp.connect(amqpUrl, function (error0, connection) {
     if (error0) {
       throw error0;
@@ -12,8 +13,8 @@ export function sendTestMessageToQueue(userID: string) {
       if (error1) {
         throw error1;
       }
-      var queue = "GDPR";
-      var msg = JSON.stringify({ "UserID": userID });
+      var queue = "Registration";
+      var msg = JSON.stringify({ "profileData": profileData });
     
       console.log("Created channel");
 
@@ -28,4 +29,59 @@ export function sendTestMessageToQueue(userID: string) {
       connection.close();
     }, 500);
   });
+}
+
+export function listenToFailedProfileCreation(connection: amqp.Connection | null, callback: (message: string) => void ): void {
+  if (!connection) {
+    console.error("No connection provided to listen function.");
+    return;
+  }
+  connection.createChannel(function (error1, channel) {
+    if (error1) { throw error1; }
+
+    const queue = "RegistrationFailure";
+
+    channel.assertQueue(queue, { durable: true, });
+
+    console.log(" [*] Waiting for messages in %s. To exit press CTRL+C",queue );
+
+    channel.consume(
+      queue,
+      function (msg) {
+        if (msg) {
+          console.log(" [x] Received %s", msg.content.toString());
+          callback(msg.content.toString());
+        } else {
+          console.log(" [x] Received a null message");
+          callback("null message");
+        }
+      },
+      {
+        noAck: true,
+      }
+    );
+  });
+}
+
+export function connectWithRetry(
+  retries: number = 5,
+  delay: number = 5000,
+  callback: (error: Error | null, connection: amqp.Connection | null) => void
+): void {
+  function attemptConnection(attempt: number): void {
+    amqp.connect(amqpUrl, (err: Error | null, connection: amqp.Connection | null) => {
+      if (err) {
+        console.error(`RabbitMQ connection failed, retrying in ${delay / 1000}s...`);
+        if (attempt < retries) {
+          setTimeout(() => attemptConnection(attempt + 1), delay);
+        } else {
+          callback(new Error("Could not connect to RabbitMQ after multiple retries."), null);
+        }
+      } else {
+        console.log("Connected to RabbitMQ");
+        callback(null, connection);
+      }
+    });
+  }
+  attemptConnection(1);
 }

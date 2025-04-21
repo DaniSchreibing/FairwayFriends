@@ -8,6 +8,7 @@ import { resolve } from "path";
 import * as rabbitMQService from "./services/rabbitmq.service";
 import { deleteByUserID } from "./services/user.service";
 import cookieParser from "cookie-parser";
+import * as profileService from "./services/user.service";
 
 dotenv.config({ path: resolve(__dirname, "../.env") });
 
@@ -35,6 +36,28 @@ AppDataSource.initialize()
         })();
         console.log("Received message:", userId);
         deleteByUserID(userId);
+      });
+      rabbitMQService.listenForRegistration(connection, (message) => {
+        const profileData = (() => {
+          try {
+            return JSON.parse(message).profileData;
+          } catch {
+            return null;
+          }
+        })();
+        console.log("Received message:", profileData);
+        profileService.createProfile(profileData);
+
+        // //TODO: Test this
+        // profileService
+        //   .createProfile(profileData)
+        //   .then((result) => {
+        //     console.log("Profile created:", result);
+        //   })
+        //   .catch((error) => {
+        //     console.error("Error creating profile:", error);
+        //     rabbitMQService.deleteFirebaseUser(profileData.UserID);
+        //   });
       });
     });
 
