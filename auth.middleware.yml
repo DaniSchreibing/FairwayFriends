@@ -1,0 +1,13 @@
+# apiVersion: traefik.io/v1alpha1
+# kind: Middleware
+# metadata:
+#   name: auth
+#   namespace: default
+# spec:
+#   forwardAuth:
+#     address: http://auth-service.default.svc.cluster.local/verify
+#     trustForwardHeader: true
+#     authResponseHeaders:
+#       - X-User-ID
+#       - X-User-Email
+#       - X-User-Role
