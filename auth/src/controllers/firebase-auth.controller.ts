@@ -88,6 +88,8 @@ export const loginUser = (req: Request, res: Response) => {
       if (idToken) {
         res.cookie("access_token", idToken, {
           httpOnly: true,
+          secure: true,
+          sameSite: "none",
         });
         res
           .status(200)
