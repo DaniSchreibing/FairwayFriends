@@ -1,4 +1,4 @@
-name: SonarCloud Scan
+name: SonarCloud Scanning
 
 on:
   workflow_run:
