@@ -1,14 +1,16 @@
 name: SonarCloud Scan2
+
 on:
   push:
     branches:
       - development
   pull_request:
     types: [opened, synchronize, reopened]
+
 jobs:
   sonarqube-interaction-service:
     name: SonarQube-interaction-service
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./interaction
