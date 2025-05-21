@@ -1,27 +1,24 @@
 name: SonarCloud Scan
-
 on:
-  workflow_run:
-    workflows: [ "Testing for Interaction Service"]
-    branches: [ development ]
-    types:
-      - completed
-
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
 jobs:
   sonarqube-interaction-service:
     name: SonarQube-interaction-service
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: windows-latest
     defaults:
       run:
         working-directory: ./interaction
-
+        
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 0 
       - name: Install Dependencies
-        run: npm ci
+        run: npm ci          
       - name: Run tests with coverage
         run: npm run test
       - name: SonarQube Scan
