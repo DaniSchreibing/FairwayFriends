@@ -2,8 +2,9 @@ name: SonarCloud Scan
 
 on:
   workflow_run:
-    workflows: [ "Testing for Interaction Service"]
-    types: [ completed ]
+    workflows: [ Testing ]
+    types:
+      - completed
 
 jobs:
   on-success:

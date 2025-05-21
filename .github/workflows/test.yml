@@ -1,4 +1,4 @@
-name: Testing for Interaction Service
+name: Testing
 
 on:
   push:
