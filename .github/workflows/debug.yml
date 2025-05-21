@@ -2,7 +2,7 @@ name: Debug Workflow Run
 
 on:
   workflow_run:
-    workflows: [ "Testing for Interaction Service" ]
+    workflows: [ Testing for Interaction Service ]
     branches: [ development ]
     types:
       - completed
