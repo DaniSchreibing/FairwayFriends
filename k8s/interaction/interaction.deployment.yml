@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: interaction
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: interaction
+  template:
+    metadata:
+      labels:
+        app: interaction
+    spec:
+      containers:
+        - name: interaction
+          image: 367074/interaction:latest
+          env:
+            - name: AMQP_URL
+              value: amqp://guest:guest@rabbitmq:5672
+            - name: MONGO_URI
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: MONGO_URI
+          ports:
+            - containerPort: 3001

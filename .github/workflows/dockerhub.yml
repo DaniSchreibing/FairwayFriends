@@ -1,9 +1,8 @@
 name: DockerHub Publish
 
 on:
-  push:
-    branches:
-      - main
+  release:
+    types: [ created ]
 
 jobs:
   build-and-publish:
