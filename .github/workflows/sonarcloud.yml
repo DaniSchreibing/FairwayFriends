@@ -2,15 +2,13 @@ name: SonarCloud Scanning
 
 on:
   workflow_run:
-    workflows: [ Testing for Interaction Service ]
+    workflows: [ "Testing for Interaction Service" ]
     branches: [ development ]
-    types:
-      - completed
+    types: [ completed ]
 
 jobs:
   sonarqube-interaction-service:
-    name: SonarQube-interaction-service
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     defaults:
       run:
