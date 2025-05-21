@@ -3,8 +3,7 @@ name: SonarCloud Scan
 on:
   workflow_run:
     workflows: [ Testing ]
-    types:
-      - completed
+    types: [ completed ]
 
 jobs:
   on-success:
@@ -21,7 +20,7 @@ jobs:
   sonarqube-interaction-service:
     name: SonarQube-interaction-service
     if: github.event.workflow_run.conclusion == 'success'
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./interaction
