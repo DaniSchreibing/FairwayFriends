@@ -1,5 +1,4 @@
 name: SonarCloud Scanning
-
 on:
   workflow_run:
     workflows: [ "Testing for Interaction Service" ]
@@ -8,13 +7,25 @@ on:
 
 jobs:
   sonarqube-interaction-service:
-    if: github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./interaction
-
     steps:
+      # Add debugging steps first
+      - name: Print Workflow Info
+        run: |
+          echo "Workflow Conclusion: ${{ github.event.workflow_run.conclusion }}"
+          echo "Workflow ID: ${{ github.event.workflow_run.id }}"
+          echo "Workflow Repository: ${{ github.event.workflow_run.repository }}"
+      
+      # Only then evaluate the condition
+      - name: Evaluate Condition
+        if: github.event.workflow_run.conclusion == 'success'
+        run: |
+          echo "Condition passed, proceeding..."
+          
+      # Rest of your steps...
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
