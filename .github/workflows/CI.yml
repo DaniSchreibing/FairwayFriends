@@ -13,10 +13,6 @@ jobs:
       matrix:
         service: [ interaction ]
 
-    defaults:
-      run:
-        working-directory: ./${{ matrix.service }}
-    
     steps:
       - uses: actions/checkout@v2
       
@@ -27,6 +23,7 @@ jobs:
 
       - name: Install Dependencies
         run: npm ci
+        working-directory: ./${{ matrix.service }}
         
   test:
     runs-on: ubuntu-latest
@@ -43,3 +40,4 @@ jobs:
         env:
           NODE_ENV: test
         run: npm test
+        working-directory: ./${{ matrix.service }}
