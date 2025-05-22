@@ -36,6 +36,8 @@ jobs:
         working-directory: ./${{ matrix.service }}
 
     steps:
+      - uses: actions/checkout@v2
+      
       - name: Run tests
         env:
           NODE_ENV: test
