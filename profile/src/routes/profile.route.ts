@@ -8,5 +8,6 @@ router.post("/", profileController.createProfile);
 router.get("/", authenticateRequest, authorizeAdmin, profileController.getAllProfiles);
 router.get("/:userID", authenticateRequest, authorizeOwner, profileController.getProfileByID);
 router.delete("/userID/:userID", authenticateRequest, authorizeOwner, profileController.deleteProfile);
+router.put("/:userID", authenticateRequest, authorizeOwner, profileController.updateProfile);
 
 export default router;
