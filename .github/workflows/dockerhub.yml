@@ -1,4 +1,5 @@
 name: DockerHub Publish
+
 on:
   release:
     types: [ created ]

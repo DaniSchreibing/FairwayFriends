@@ -1,0 +1,41 @@
+name: DockerHub Publish
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: [auth, interaction, profile]
+
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+
+    env:
+      IMAGE_NAME: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ matrix.service }}
+      AZURE_APP_NAME: fairwayfriends-${{ matrix.service }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+
+      - name: Build and Push Docker image
+        uses: docker/build-push-action@v3
+        with:
+          context: ./${{ matrix.service }}
+          push: true
+          tags: ${{ env.IMAGE_NAME }}:latest
+          no-cache: true
