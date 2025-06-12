@@ -19,7 +19,7 @@ jobs:
       id-token: write
 
     env:
-      IMAGE_NAME: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ matrix.service }}
+      IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/${{ matrix.service }}
       AZURE_APP_NAME: fairwayfriends-${{ matrix.service }}
 
     steps:
