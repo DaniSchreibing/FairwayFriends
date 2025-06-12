@@ -32,7 +32,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-const serviceAccount = require("../FirebaseService.json");
+// const serviceAccount = require("../FirebaseService.json");
 admin.initializeApp({
   credential: admin.credential.cert({
     projectId: process.env.FIREBASE_PROJECT_ID,
