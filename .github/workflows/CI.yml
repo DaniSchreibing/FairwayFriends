@@ -24,9 +24,6 @@ jobs:
       - name: Install Dependencies
         run: npm ci
         working-directory: ./${{ matrix.service }}
-
-      - name: Force Failure
-        run: exit 1
         
   test:
     needs: build
