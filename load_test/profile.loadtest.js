@@ -26,13 +26,13 @@ export default function () {
   //   "Get all users": (r) => r.status == 200,
   // });
 
-  const getUser = http.get(`${baseURL}/profile/r3PQzYkaQDgAUMMZfq6PQ2hhtAh2`, {
+  const getUserBefore = http.get(`${baseURL}/profile/r3PQzYkaQDgAUMMZfq6PQ2hhtAh2`, {
     headers,
   });
-  const data = getUser.json();
+  const data = getUserBefore.json();
 
-  check(getUser, {
-    "Get user": (r) => r.status == 200,
+  check(getUserBefore, {
+    "Get user (before edit)": (r) => r.status == 200,
     "Get user has correct id": () =>
       data.UserID === "r3PQzYkaQDgAUMMZfq6PQ2hhtAh2",
   });
@@ -60,6 +60,17 @@ export default function () {
   check(updateUser, {
     "Update user status is 200": (r) => r.status == 200,
     "Update user age is correct": () => updateData.age === randomAge,
+  });
+
+  const getUserAfter = http.get(`${baseURL}/profile/r3PQzYkaQDgAUMMZfq6PQ2hhtAh2`, {
+    headers,
+  });
+  const dataAfter = getUserAfter.json();
+
+  check(getUserAfter, {
+    "Get user (after edit)": (r) => r.status == 200,
+    "Get user has correct id": () =>
+      dataAfter.UserID === "r3PQzYkaQDgAUMMZfq6PQ2hhtAh2",
   });
 
   // const res = http.get(`${baseURL}/interaction`);

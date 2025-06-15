@@ -2,6 +2,9 @@ import { Request, Response } from "express";
 import firebase from "firebase/app";
 import { sendProfileData } from "../services/rabbitmq.service";
 import * as rabbitMQService from "../services/rabbitmq.service";
+import { failedLoginAttempts, successfullLogins } from "../metrics/metrics";
+import * as datefns from "date-fns";
+import * as dateFnsTz from "date-fns-tz";
 
 const {
   getAuth,
@@ -39,7 +42,7 @@ export const registerUser = (req: Request, res: Response) => {
 
           sendProfileData(profileData);
           console.log("Profile data sent to RabbitMQ:", profileData);
-          
+
           // //TODO: Test this
           // rabbitMQService.connectWithRetry(5, 5000, (error, connection) => {
           //   rabbitMQService.listenToFailedProfileCreation(connection, (message) => {
@@ -91,6 +94,9 @@ export const loginUser = (req: Request, res: Response) => {
           secure: true,
           sameSite: "none",
         });
+
+        successfullLogins.inc();
+
         res
           .status(200)
           .json({ message: "User logged in successfully", userCredential });
@@ -99,6 +105,9 @@ export const loginUser = (req: Request, res: Response) => {
       }
     })
     .catch((error: any) => {
+      const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      failedLoginAttempts.labels(email, error.code, dateFnsTz.formatInTimeZone(new Date(), 'Europe/Amsterdam', 'yyyy-MM-dd HH:mm zzz')).inc();
+
       console.error(error);
       const errorMessage =
         error.message || "An error occurred while logging in";
