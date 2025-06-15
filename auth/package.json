@@ -15,10 +15,13 @@
     "amqplib": "^0.10.7",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
+    "date-fns": "^4.1.0",
+    "date-fns-tz": "^3.2.0",
     "dotenv": "^16.4.7",
     "express": "^5.1.0",
     "firebase": "^11.6.0",
     "firebase-admin": "^13.2.0",
+    "prom-client": "^15.1.3",
     "uuid": "^11.1.0"
   },
   "devDependencies": {

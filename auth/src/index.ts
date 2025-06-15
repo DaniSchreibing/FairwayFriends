@@ -6,8 +6,10 @@ import cors from "cors";
 import authRoutes from "./routes/auth.routes";
 import { resolve } from "path";
 import cookieparser from "cookie-parser";
+import { register } from "./metrics/metrics";
 
 const app = express();
+
 app.use(bodyParser.json());
 app.use(cookieparser());
 app.use(cors({
@@ -16,6 +18,11 @@ app.use(cors({
 }));
 
 app.use("/api/auth", authRoutes);
+
+// app.get('/metrics', async (_req, res) => {
+//   res.set('Content-Type', register.contentType);
+//   res.end(await register.metrics());
+// });
 
 dotenv.config();
 
