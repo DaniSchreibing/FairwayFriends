@@ -22,9 +22,15 @@ export const getAllProfiles = async () => {
   try {
     const userRepository = AppDataSource.getRepository(User);
     const users = await userRepository.find();
+    if (!users || users.length === 0) {
+      throw new Error("No users found");
+    }
     return users;
   } catch (error) {
-    throw new Error("Error getting users: " + error);
+    if (error instanceof Error) {
+      throw new Error("Error getting users: " + error.message);
+    }
+    throw new Error("Error getting users: Unknown error");
   }
 }
 
