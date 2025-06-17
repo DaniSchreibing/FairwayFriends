@@ -21,47 +21,57 @@ spec:
             - name: FIREBASE_API_KEY
               valueFrom:
                 secretKeyRef:
-                  name: firebase-config
+                  name: firebase-secrets
                   key: FIREBASE_API_KEY
             - name: FIREBASE_AUTH_DOMAIN
               valueFrom:
                 secretKeyRef:
-                  name: firebase-config
+                  name: firebase-secrets
                   key: FIREBASE_AUTH_DOMAIN
             - name: FIREBASE_PROJECT_ID
               valueFrom:
                 secretKeyRef:
-                  name: firebase-config
+                  name: firebase-secrets
                   key: FIREBASE_PROJECT_ID
             - name: FIREBASE_STORAGE_BUCKET
               valueFrom:
                 secretKeyRef:
-                  name: firebase-config
+                  name: firebase-secrets
                   key: FIREBASE_STORAGE_BUCKET
             - name: FIREBASE_MESSAGING_SENDER_ID
               valueFrom:
                 secretKeyRef:
-                  name: firebase-config
+                  name: firebase-secrets
                   key: FIREBASE_MESSAGING_SENDER_ID
             - name: FIREBASE_APP_ID
               valueFrom:
                 secretKeyRef:
-                  name: firebase-config
+                  name: firebase-secrets
                   key: FIREBASE_APP_ID
+            - name: FIREBASE_PRIVATE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: firebase-secrets
+                  key: FIREBASE_PRIVATE_KEY
+            - name: FIREBASE_CLIENT_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  name: firebase-secrets
+                  key: FIREBASE_CLIENT_EMAIL
             - name: POSTGRES_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: postgres-secrets
+                  name: postgres-secress
                   key: POSTGRES_USERNAME
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: postgres-secrets
+                  name: postgres-secress
                   key: POSTGRES_PASSWORD
             - name: POSTGRES_DB
               valueFrom:
                 secretKeyRef:
-                  name: postgres-secrets
+                  name: postgres-secress
                   key: POSTGRES_DB
             - name: POSTGRES_HOST
               value: postgres
@@ -69,12 +79,3 @@ spec:
               value: "5432"
           ports:
             - containerPort: 3003
-          volumeMounts:
-            - name: firebase-credentials
-              mountPath: /app/FirebaseService.json
-              subPath: FirebaseService.json
-              readOnly: true
-      volumes:
-        - name: firebase-credentials
-          secret:
-              secretName: firebase-service-account

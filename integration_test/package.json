@@ -1,0 +1,31 @@
+{
+  "name": "integration",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@testcontainers/mongodb": "^11.0.3",
+    "@testcontainers/postgresql": "^11.0.3",
+    "@types/jest": "^29.5.14",
+    "@types/node": "^24.0.1",
+    "@types/pg": "^8.15.4",
+    "@types/supertest": "^6.0.3",
+    "axios": "^1.9.0",
+    "jest": "^30.0.0",
+    "pg": "^8.16.0",
+    "supertest": "^7.1.1",
+    "testcontainers": "^11.0.3",
+    "ts-jest": "^29.4.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "dotenv": "^16.5.0"
+  }
+}

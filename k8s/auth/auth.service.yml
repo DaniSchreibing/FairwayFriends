@@ -3,7 +3,9 @@ kind: Service
 metadata:
   name: auth
 spec:
-  ports:
-    - port: 3002
   selector:
     app: auth
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3002
