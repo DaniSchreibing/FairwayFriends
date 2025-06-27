@@ -138,6 +138,7 @@ services:
       - total
     environment:
       AMQP_URL: amqp://guest:guest@rabbitmq:5672
+      TEST_BASE_URL: http://gateway:80
 
 networks:
   rabbitmq_nodejs:

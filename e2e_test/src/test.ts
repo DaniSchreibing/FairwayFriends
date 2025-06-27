@@ -5,9 +5,10 @@ let access_token: string;
 let uid: string;
 let interaction: any;
 
-const interactionPath = "http://localhost:/api/interaction";
-const authPath = "http://localhost:/api/auth";
-const profilePath = "http://localhost:/api/profile";
+const BASE_URL = process.env.TEST_BASE_URL || "http://localhost:";
+const interactionPath = `${BASE_URL}/api/interaction`;
+const authPath = `${BASE_URL}/api/auth`;
+const profilePath = `${BASE_URL}/api/profile`;
 
 function generateUUID(): string {
   return randomUUID();
