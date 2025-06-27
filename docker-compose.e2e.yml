@@ -48,8 +48,6 @@ services:
     image: "postgres:14.5"
     ports:
       - "5432:5432"
-    env_file:
-      - .env
     networks:
       - postgres_nodejs
     environment:
@@ -62,8 +60,6 @@ services:
       context: ./auth
       dockerfile: Dockerfile
     container_name: auth
-    env_file:
-      - .env
     ports:
       - "3002:3002"
     networks:
@@ -90,8 +86,6 @@ services:
       - auth
     ports:
       - "3003:3003"
-    env_file:
-      - .env
     networks:
       - rabbitmq_nodejs
       - postgres_nodejs
@@ -115,8 +109,6 @@ services:
       - auth
     ports:
       - "3001:3001"
-    env_file:
-      - .env
     networks:
       - rabbitmq_nodejs
       - total
@@ -140,8 +132,6 @@ services:
       - interaction
       - postgres
       - rabbitmq
-    env_file:
-      - .env
     networks:
       - rabbitmq_nodejs
       - postgres_nodejs
