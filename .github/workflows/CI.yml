@@ -2,35 +2,35 @@ name: Continuous Integration
 
 on:
   push:
-    branches: [ development ]
+    branches: [development]
   pull_request:
-    branches: [ development ]
+    branches: [development]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        service: [ interaction, profile, auth ]
+        service: [interaction, profile, auth]
 
     steps:
       - uses: actions/checkout@v2
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '16.x'
+          node-version: "16.x"
 
       - name: Install Dependencies
         run: npm ci
         working-directory: ./${{ matrix.service }}
-        
+
   unit-test:
     needs: build
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        service: [ interaction ]
+        service: [interaction]
 
     defaults:
       run:
@@ -42,7 +42,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '16.x'
+          node-version: "16.x"
 
       - name: Install Dependencies
         run: npm ci
@@ -52,7 +52,7 @@ jobs:
           NODE_ENV: test
         run: npm test
         working-directory: ./${{ matrix.service }}
-  
+
   integration-test:
     needs: unit-test
     runs-on: ubuntu-latest
@@ -66,14 +66,28 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20.x'
+          node-version: "20.x"
 
       - name: Install Dependencies
         run: npm ci
 
       - name: Run Integration Tests
         env:
-          AMQP_URL: amqp://guest:guestrabbitmq:5672
+          AMQP_URL: ${{secrets.AMQP_URL}}
+          POSTGRES_USERNAME: ${{secrets.POSTGRES_USERNAME}}
+          POSTGRES_PASSWORD: ${{secrets.POSTGRES_PASSWORD}}
+          POSTGRES_DB: ${{secrets.POSTGRES_DB}}
+          POSTGRES_HOST: ${{secrets.POSTGRES_HOST}}
+          POSTGRES_PORT: ${{secrets.POSTGRES_PORT}}
+          FIREBASE_API_KEY: ${{secrets.FIREBASE_API_KEY}}
+          FIREBASE_AUTH_DOMAIN: ${{secrets.FIREBASE_AUTH_DOMAIN}}
+          FIREBASE_PROJECT_ID: ${{secrets.FIREBASE_PROJECT_ID}}
+          FIREBASE_STORAGE_BUCKET: ${{secrets.FIREBASE_STORAGE_BUCKET}}
+          FIREBASE_MESSAGING_SENDER_ID: ${{secrets.FIREBASE_MESSAGING_SENDER_ID}}
+          FIREBASE_APP_ID: ${{secrets.FIREBASE_APP_ID}}
+          FIREBASE_PRIVATE_KEY: ${{secrets.FIREBASE_PRIVATE_KEY}}
+          FIREBASE_CLIENT_EMAIL: ${{secrets.FIREBASE_CLIENT_EMAIL}}
+          ACCESS_TOKEN: ${{secrets.ACCESS_TOKEN}}
         run: npm test
 
   sonarqube:
@@ -82,7 +96,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        service: [ interaction ]
+        service: [interaction]
 
     defaults:
       run:
