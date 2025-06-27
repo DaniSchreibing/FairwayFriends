@@ -90,12 +90,12 @@ jobs:
           ACCESS_TOKEN: ${{secrets.ACCESS_TOKEN}}
         run: npm test
 
-  End2End-test:
+  EndToEnd-test:
     needs: integration-test
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./end2end_test
+        working-directory: ./e2e_test
 
     steps:
       - uses: actions/checkout@v4
@@ -128,7 +128,7 @@ jobs:
 
   sonarqube:
     name: SonarQube Scan
-    needs: integration-test
+    needs: EndToEnd-test
     runs-on: ubuntu-latest
     strategy:
       matrix:
