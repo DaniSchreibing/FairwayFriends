@@ -14,7 +14,7 @@ function getRandomInt() {
   return Math.floor(Math.random() * (1 - 98 + 1)) + 1;
 }
 
-const baseURL = "http://localhost:/api";
+const baseURL = "http://localhost:52232/api";
 
 export default function () {
   const headers = {
@@ -26,7 +26,7 @@ export default function () {
   //   "Get all users": (r) => r.status == 200,
   // });
 
-  const getUserBefore = http.get(`${baseURL}/profile/r3PQzYkaQDgAUMMZfq6PQ2hhtAh2`, {
+  const getUserBefore = http.get(`${baseURL}/profile/HJilLajOoiQNd82mCTlyB4KhD4C2`, {
     headers,
   });
   const data = getUserBefore.json();
@@ -34,18 +34,18 @@ export default function () {
   check(getUserBefore, {
     "Get user (before edit)": (r) => r.status == 200,
     "Get user has correct id": () =>
-      data.UserID === "r3PQzYkaQDgAUMMZfq6PQ2hhtAh2",
+      data.UserID === "HJilLajOoiQNd82mCTlyB4KhD4C2",
   });
 
   const randomAge = getRandomInt();
   const updateUser = http.put(
-    `${baseURL}/profile/r3PQzYkaQDgAUMMZfq6PQ2hhtAh2`,
+    `${baseURL}/profile/HJilLajOoiQNd82mCTlyB4KhD4C2`,
     JSON.stringify({
       id: "8d1960e8-280e-4cad-bad0-97a8d444ac65",
       firstName: "Timber",
       lastName: "Schreibing",
       age: randomAge,
-      UserID: "r3PQzYkaQDgAUMMZfq6PQ2hhtAh2",
+      UserID: "HJilLajOoiQNd82mCTlyB4KhD4C2",
       Role: "student",
     }),
     {
@@ -62,7 +62,7 @@ export default function () {
     "Update user age is correct": () => updateData.age === randomAge,
   });
 
-  const getUserAfter = http.get(`${baseURL}/profile/r3PQzYkaQDgAUMMZfq6PQ2hhtAh2`, {
+  const getUserAfter = http.get(`${baseURL}/profile/HJilLajOoiQNd82mCTlyB4KhD4C2`, {
     headers,
   });
   const dataAfter = getUserAfter.json();
@@ -70,7 +70,7 @@ export default function () {
   check(getUserAfter, {
     "Get user (after edit)": (r) => r.status == 200,
     "Get user has correct id": () =>
-      dataAfter.UserID === "r3PQzYkaQDgAUMMZfq6PQ2hhtAh2",
+      dataAfter.UserID === "HJilLajOoiQNd82mCTlyB4KhD4C2",
   });
 
   // const res = http.get(`${baseURL}/interaction`);

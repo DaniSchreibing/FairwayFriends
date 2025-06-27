@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: interaction
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: interaction
+  template:
+    metadata:
+      labels:
+        app: interaction
+    spec:
+      containers:
+        - name: interaction
+          image: 367074/interaction:latest
+          envFrom:
+            - configMapRef:
+                name: secrets
+          ports:
+            - containerPort: 3001

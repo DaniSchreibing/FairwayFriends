@@ -17,7 +17,7 @@ scrape_configs:
     scrape_interval: 5s
     metrics_path: /api/auth/metrics
     static_configs:
-      - targets: ['auth:3002']
+      - targets: ['auth:52232']
 
   - job_name: cadvisor
     scrape_interval: 5s

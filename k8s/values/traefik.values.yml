@@ -1,0 +1,20 @@
+metrics:
+  prometheus:
+    enabled: true
+    addEntryPointsLabels: true
+    addServicesLabels: true
+    addRoutersLabels: true
+ports:
+  metrics:
+    exposed: true
+    port: 9100
+    protocol: TCP
+    name: metrics
+
+additionalArguments:
+  - "--metrics=true"
+  - "--metrics.prometheus=true"
+  - "--metrics.prometheus.buckets=0.1,0.3,1.2,5.0"
+  - "--metrics.prometheus.addEntryPointsLabels=true"
+  - "--metrics.prometheus.addServicesLabels=true"
+  - "--metrics.prometheus.addRoutersLabels=true"

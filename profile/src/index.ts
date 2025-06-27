@@ -61,6 +61,8 @@ AppDataSource.initialize()
       });
     });
 
+    
+
     if ((await AppDataSource.manager.count(User)) === 0) {
       await AppDataSource.manager.save(
         AppDataSource.manager.create(User, {

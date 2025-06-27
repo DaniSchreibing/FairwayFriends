@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+data:
+  POSTGRES_USER: admin2
+  POSTGRES_PASSWORD: admin2
+  POSTGRES_DB: FairwayFriends2
