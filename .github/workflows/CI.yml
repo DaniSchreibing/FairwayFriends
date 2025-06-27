@@ -73,7 +73,7 @@ jobs:
 
       - name: Run Integration Tests
         env:
-          AMQP_URL: amqp://guest:guest@rabbitmq:5672
+          AMQP_URL: amqp://guest:guestrabbitmq:5672
         run: npm test
 
   sonarqube:
