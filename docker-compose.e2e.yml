@@ -165,6 +165,7 @@ services:
       FIREBASE_PRIVATE_KEY: ${FIREBASE_PRIVATE_KEY}
       FIREBASE_CLIENT_EMAIL: ${FIREBASE_CLIENT_EMAIL}
       ACCESS_TOKEN: ${ACCESS_TOKEN}
+      MONGO_URI: ${MONGO_URI}
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.interaction.rule=PathPrefix(`/api/interaction`)"
