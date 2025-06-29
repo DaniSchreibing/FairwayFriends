@@ -54,9 +54,9 @@ services:
     networks:
       - postgres_nodejs
     environment:
-      - POSTGRES_USER=${POSTGRES_USERNAME}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USERNAME} || ${secrets.POSTGRES_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD} || ${secrets.POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB} || ${secrets.POSTGRES_DB}
 
   auth:
     build: 
