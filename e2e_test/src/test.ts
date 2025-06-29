@@ -14,7 +14,16 @@ function generateUUID(): string {
   return randomUUID();
 }
 
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
 describe("E2E Tests", () => {
+  console.log("Waiting for the server to start...");
+  //add sleep here
+  beforeAll(async () => {
+    await sleep(20000); // Wait for 5 seconds to ensure the server is up
+    console.log("Starting E2E tests...");
+  });
+
   const userId = generateUUID();
 
   it("should register a user", async () => {

@@ -1,7 +1,7 @@
 services:
   gateway:
     image: traefik:v2.10
-    container_name: gateway
+    container_name: gateway_e2e
     command:
       - "--api.insecure=true"
       - "--providers.docker=true"
@@ -31,7 +31,7 @@ services:
 
   rabbitmq:
     image: rabbitmq:4.0-management-alpine
-    container_name: 'rabbitmq2'
+    container_name: rabbitmq_e2e
     ports:
       - 5673:5672
       - 15673:15672
@@ -46,6 +46,9 @@ services:
 
   postgres:
     image: "postgres:14.5"
+    container_name: postgres_e2e
+    env_file:
+      - .env
     ports:
       - "5432:5432"
     networks:
@@ -59,7 +62,7 @@ services:
     build: 
       context: ./auth
       dockerfile: Dockerfile
-    container_name: auth
+    container_name: auth_e2e
     ports:
       - "3002:3002"
     networks:
@@ -79,7 +82,7 @@ services:
     build: 
       context: ./profile
       dockerfile: Dockerfile
-    container_name: profile2
+    container_name: profile_e2e
     depends_on:
       - postgres
       - rabbitmq
@@ -103,7 +106,7 @@ services:
     build: 
       context: ./interaction
       dockerfile: Dockerfile
-    container_name: interaction2
+    container_name: interaction_e2e
     depends_on:
       - rabbitmq
       - auth
