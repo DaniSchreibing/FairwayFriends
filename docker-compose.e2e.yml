@@ -2,6 +2,7 @@ services:
   gateway:
     image: traefik:v2.10
     container_name: gateway_e2e
+    mem_limit: 256m
     command:
       - "--api.insecure=true"
       - "--providers.docker=true"
@@ -32,6 +33,7 @@ services:
   rabbitmq:
     image: rabbitmq:4.0-management-alpine
     container_name: rabbitmq_e2e
+    mem_limit: 256m
     ports:
       - 5673:5672
       - 15673:15672
@@ -45,8 +47,9 @@ services:
       timeout: 5s
 
   postgres:
-    image: "postgres:14.5"
+    image: postgres:14.5-alpine
     container_name: postgres_e2e
+    mem_limit: 384m
     env_file:
       - .env
     ports:
@@ -63,6 +66,7 @@ services:
       context: ./auth
       dockerfile: Dockerfile
     container_name: auth_e2e
+    mem_limit: 384m
     env_file:
       - .env
     ports:
@@ -99,6 +103,7 @@ services:
       context: ./profile
       dockerfile: Dockerfile
     container_name: profile_e2e
+    mem_limit: 384m
     env_file:
       - .env
     depends_on:
@@ -139,6 +144,7 @@ services:
       context: ./interaction
       dockerfile: Dockerfile
     container_name: interaction_e2e
+    mem_limit: 384m
     env_file:
       - .env
     depends_on:
