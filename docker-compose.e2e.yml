@@ -66,7 +66,6 @@ services:
       context: ./auth
       dockerfile: Dockerfile
     container_name: auth_e2e
-    mem_limit: 384m
     env_file:
       - .env
     ports:
@@ -103,7 +102,6 @@ services:
       context: ./profile
       dockerfile: Dockerfile
     container_name: profile_e2e
-    mem_limit: 384m
     env_file:
       - .env
     depends_on:
@@ -144,7 +142,6 @@ services:
       context: ./interaction
       dockerfile: Dockerfile
     container_name: interaction_e2e
-    mem_limit: 384m
     env_file:
       - .env
     depends_on:
