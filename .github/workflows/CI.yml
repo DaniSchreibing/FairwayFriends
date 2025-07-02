@@ -152,7 +152,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        service: [interaction]
+        service: [interaction, auth, profile]
 
     defaults:
       run:
