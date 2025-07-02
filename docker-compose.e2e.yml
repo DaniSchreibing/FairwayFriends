@@ -2,6 +2,7 @@ services:
   gateway:
     image: traefik:v2.10
     container_name: gateway_e2e
+    mem_limit: 400m
     command:
       - "--api.insecure=true"
       - "--providers.docker=true"
@@ -47,6 +48,7 @@ services:
   postgres:
     image: postgres:14.5-alpine
     container_name: postgres_e2e
+    mem_limit: 400m
     env_file:
       - .env
     ports:
@@ -63,6 +65,7 @@ services:
       context: ./auth
       dockerfile: Dockerfile
     container_name: auth_e2e
+    mem_limit: 400m
     env_file:
       - .env
     ports:
@@ -99,6 +102,7 @@ services:
       context: ./profile
       dockerfile: Dockerfile
     container_name: profile_e2e
+    mem_limit: 400m
     env_file:
       - .env
     depends_on:
@@ -139,6 +143,7 @@ services:
       context: ./interaction
       dockerfile: Dockerfile
     container_name: interaction_e2e
+    mem_limit: 400m
     env_file:
       - .env
     depends_on:
@@ -178,6 +183,7 @@ services:
       context: ./e2e_test
       dockerfile: Dockerfile
     container_name: e2e_test
+    mem_limit: 400m
     depends_on:
       - auth
       - profile
